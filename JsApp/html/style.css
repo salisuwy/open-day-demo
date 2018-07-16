@@ -1,0 +1,43 @@
+img {
+    border: 4px solid black;
+	
+}
+h2
+{
+	
+	
+  font-size: 48px;
+  text-shadow: -1px -1px #f00, 1px 1px #a00, -3px 0 4px #000;
+  font-family:"Segoe print", Arial, Helvetica, sans-serif;
+  color: #dd0000;
+  margin:14px auto;
+  font-weight:lighter;
+  -moz-box-shadow:none;  
+  -webkit-box-shadow: none;  
+  box-shadow:none;  
+  text-align:center;
+  display:block;
+  min-height:172px;
+  min-width:800;
+  max-height:172px;
+  max-width:800px; 
+}
+p
+{
+	font-family: "Bookman Old Style";
+	text-align: justify;
+	font-size:35px;
+	
+}
+.toto {
+	 border-width:3px;
+	 border-style:solid;
+	 border-color:black;
+	 padding:0 10px;
+	 margin-left:450px;
+ }
+ font-family: "Bookman Old Style";
+	font-size:18px;
+	text-decoration:underline;
+	text-align: center;
+	width: 345px;

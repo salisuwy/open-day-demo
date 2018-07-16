@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "99207139174",
+    "firebase_url": "https://pepper-robot.firebaseio.com",
+    "project_id": "pepper-robot",
+    "storage_bucket": "pepper-robot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99207139174:android:4133b3791520aea0",
+        "android_client_info": {
+          "package_name": "com.example.flo98.speechtotext"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99207139174-odr7rhmkmr3mpvoebu301gg5mhlsh59l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIiB_h9wgbcErrG7mxfLvZOu9TVXCY0QY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

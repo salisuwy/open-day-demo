@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale = 1.333,minimum-scale = 1.333,maximum-scale = 1.333" />
+    <title>Question Page</title>
+
+    <script src="/libs/qimessaging/2/qimessaging.js"></script>
+    <script src="firebase.js"></script>
+    <script src="jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        var session = new QiSession(function (session) {
+            $("#Answer").text("Connection esterblished!");
+        }, function () {
+            $("#Answer").text("Could not connect to the robot");
+        });
+
+        function performSpeech(Answer) {
+            session.service("ALAnimatedSpeech").then(function (tts) {
+                tts.say(Answer);
+            });
+        }
+
+        function performMovement(x, y, theta) {
+            //motion.move(1, 0, 0);
+            //motion.post.moveTo(0.2, 0.0, 0.1);
+            // var motion = session.service("ALMotion").then(function (motion) {
+            //     motion.moveInit();
+            //     $("#Answer").text("Motion esterblished!");
+            // });
+            session.service("ALMotion").then(function (motion) {
+                motion.move(x, y, theta);
+            });
+        }
+
+
+
+        function getPrimaryImage(imageTitle, isTitleClean) {
+            if (!isTitleClean) {
+                imageTitle = imageTitle.slice(0, imageTitle.indexOf('('));
+                imageTitle = imageTitle.trim();
+            }
+
+            var imageUrl = 'http://en.wikipedia.org/w/api.php';
+            var imageData = {
+                action: 'query',
+                prop: 'pageimages',
+                format: 'json',
+                piprop: 'original',
+                titles: imageTitle
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: imageUrl,
+                data: imageData,
+                dataType: 'jsonp',
+                jsonpCallback: 'imageCallback',
+                async: false,
+                crossDomain: true
+            });
+        }
+
+
+        function imageCallback(imageResult) {
+            var noImage = "https://www.pclinkshop.co.za/wp-content/uploads/2017/11/No_Image.png";
+            var keys = Object.keys(imageResult.query.pages);
+            if (keys.length > 1) {
+                document.getElementById("Image").src = noImage;
+            } else if (keys == "-1") {
+                document.getElementById("Image").src = noImage;
+            } else {
+                if (imageResult.query.pages[keys[0]].original) {
+                    var result = imageResult.query.pages[keys[0]].original.source;
+                    console.log("Wikipedia Image " + result);
+                    document.getElementById("Image").src = result;
+
+                } else {
+                    console.log(noImage);
+                    document.getElementById("Image").src = noImage;
+                }
+            }
+        }
+
+
+        function wikipediaSearch(wolframInterpretation) {
+            wikipediaQuestion = wolframInterpretation.slice(0, wolframInterpretation.indexOf('('));
+
+            var wikipediaUrl = "https://en.wikipedia.org/w/api.php";
+            var wikipediaData = {
+                action: "opensearch",
+                search: wikipediaQuestion.trim()
+            };
+            $.ajax({
+                type: 'GET',
+                url: wikipediaUrl,
+                data: wikipediaData,
+                dataType: 'jsonp',
+                async: false,
+                crossDomain: true,
+                success: function (successResult) {
+                    wikipediaCallback(wikipediaQuestion, successResult);
+                }
+            });
+
+        }
+
+        function wikipediaCallback(wikipediaQuestion, wikipediaResult) {
+            if (!(wikipediaResult[2][0]) && !(wikipediaResult[2][1])) {
+                $("#Answer").text("No result found");
+            } else {
+                var wikipediaAnswer = wikipediaResult[2][0];
+                if (wikipediaAnswer == "") {
+                    wikipediaAnswer = wikipediaResult[2][1];
+                }
+                $("#Answer").text(wikipediaAnswer);
+                getPrimaryImage(wikipediaQuestion, true);
+                console.log(wikipediaAnswer);
+                performSpeech(wikipediaAnswer);
+
+            }
+        }
+
+        function wolframSearch(question) {
+            var wolframUrl = "http://api.wolframalpha.com/v2/query";
+            var wolframData = {
+                appid: "HLJ3LG-LA4UR6QPXE",
+                format: "plaintext",
+                output: "json",
+                input: question
+            };
+            $.ajax({
+                type: 'GET',
+                url: wolframUrl,
+                data: wolframData,
+                dataType: 'jsonp',
+                jsonpCallback: 'wolframCallback',
+                async: false,
+                crossDomain: true
+            });
+        }
+
+        function wolframCallback(wolframResult) {
+            var qr = wolframResult.queryresult;
+            var pods = wolframResult.queryresult.pods;
+
+            if (qr['success'] == false) {
+                $("#Answer").text("Question cannot be resolved");
+                document.getElementById("Image").src =
+                    "https://www.pclinkshop.co.za/wp-content/uploads/2017/11/No_Image.png";
+            } else {
+                var pods0 = pods[0];
+                var pods1 = pods[1];
+
+                if ((pods1['id'].toLowerCase().indexOf('result') !== -1) || (pods1['id'].toLowerCase().indexOf(
+                        'definition') !== -1) || (pods1['primary'] == true)) {
+                    var pd1 = pods1;
+                    var pd1Subpod0 = pd1.subpods[0];
+                    var wolframAnswer = pd1Subpod0.plaintext;
+                    wolframAnswer = contentReplace(wolframAnswer);
+                    $("#Answer").text(wolframAnswer);
+                    getPrimaryImage(wolframAnswer, false);
+                    console.log(wolframAnswer);
+                    performSpeech(wolframAnswer);
+                } else if (pods0['title'].toLowerCase().indexOf('input interpretation') !== -1) {
+                    var pd0 = pods0;
+                    var pd0Subpod0 = pd0.subpods[0];
+                    var wolframInterpretation = pd0Subpod0.plaintext;
+                    wikipediaSearch(wolframInterpretation);
+
+                }
+            }
+        }
+
+
+        // function replace
+        var introText = "Hello! Welcome to Nottingham Trent University Open Day. My name is Pepper. I am a humanoid robot. I hope you find this visit interesting. You can ask me anything and I will try my best to answer you.";
+        var byeText = "Thank you for talking to me. I wish you a safe journey to your various destinations.";
+        function contentReplace(text){
+            if (text.trim() === 'My name is Wolfram|Alpha.'){
+                return 'My name is Pepper.'
+            }
+            if (text.trim() === 'I was created by Stephen Wolfram and his team.'){
+                return 'I was created by Aldebaran Robotics in Paris, France.'
+            }
+            return text;
+        }
+
+
+
+        $(document).ready(function () {
+
+            var config = {
+                apiKey: "AIzaSyCeleKtV1iTdauueY80zXG8sfP9eC3lEKc",
+                authDomain: "pepper-robot.firebaseapp.com",
+                databaseURL: "https://pepper-robot.firebaseio.com",
+                projectId: "pepper-robot",
+                storageBucket: "pepper-robot.appspot.com",
+                messagingSenderId: "99207139174"
+            };
+            firebase.initializeApp(config);
+            var database = firebase.database();
+            var ref = firebase.database().ref('text');
+
+            ref.on('value', function (snapshot) {
+                var text = snapshot.val();
+
+                // perform check
+                switch (text) {
+                    case "ACTION_BUTTON_UP":
+                        performMovement(0.2, 0, 0);
+                        break;
+                    case "ACTION_BUTTON_DOWN":
+                        performMovement(-0.2, 0, 0);
+                        console.log("ACTION_BUTTON_DOWN");
+                        break;
+                    case "ACTION_BUTTON_LEFT":
+                        performMovement(0, 0, -10);                        
+                        console.log("ACTION_BUTTON_LEFT");
+                        break;
+                    case "ACTION_BUTTON_RIGHT":
+                        performMovement(0, 0, 10);
+                        console.log("ACTION_BUTTON_RIGHT");
+                        break;
+                    case "ACTION_BUTTON_GREET":
+                        console.log("ACTION_BUTTON_GREET");
+                        performSpeech(introText);
+                        break;
+                    case "ACTION_BUTTON_BYE":
+                        console.log("ACTION_BUTTON_BYE");
+                        performSpeech(byeText);                        
+                        break;
+                    case "ACTION_BUTTON_RESET":
+                        performMovement(0, 0, 0);
+                        console.log("ACTION_BUTTON_RESET");
+                        break;
+                    default:
+                        $("#txt").text(text);
+                        wolframSearch(text);
+                }
+
+
+            });
+
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <h2 id="txt" align="left"> Welcome </h2>
+    <img id="Image" src="" width="415" height="540" align="left">
+
+    <div class="toto">
+        <p id="Answer"></p>
+    </div>
+
+</body>
+
+</html>

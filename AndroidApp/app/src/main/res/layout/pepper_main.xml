@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/text_tts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="20dp"
+                android:text="" />
+
+        </RelativeLayout>
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:layout_alignParentLeft="true"
+                android:weightSum="3">
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/layout_2_1">
+
+                    <Button
+                        android:id="@+id/button_greet"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/font_awesome"
+                        android:text="\uf2b5"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="60dp"
+                        android:onClick="performAction"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/layout_2_2">
+
+
+                    <Button
+                        android:id="@+id/button_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/font_awesome"
+                        android:gravity="bottom|center_horizontal"
+                        android:text="\uf106"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="45dp"
+                        android:onClick="performAction"/>
+
+                    <Button
+                        android:id="@+id/button_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="58dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/font_awesome"
+                        android:gravity="top|center_horizontal"
+                        android:text="\uf107"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="45dp"
+                        android:onClick="performAction"/>
+
+                    <Button
+                        android:id="@+id/button_left"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/font_awesome"
+                        android:gravity="left|center_vertical"
+                        android:text="\uf104"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="45dp"
+                        android:onClick="performAction"/>
+
+                    <Button
+                        android:id="@+id/button_right"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/font_awesome"
+                        android:gravity="right|center_vertical"
+                        android:text="\uf105"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="45dp"
+                        android:onClick="performAction"/>
+
+
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/layout_2_3">
+
+                    <Button
+                        android:id="@+id/button_bye"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/font_awesome"
+                        android:text="\uf461"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="60dp"
+                        android:onClick="performAction"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/layout_3">
+
+            <Button
+                android:id="@+id/button_mic"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_awesome"
+                android:text="\uf3c9"
+                android:textColor="@color/colorAccent"
+                android:background="@android:color/transparent"
+                android:textSize="70dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_mic"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="@string/TextInfo" />
+
+            <Button
+                android:id="@+id/button_reset"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp"
+                android:fontFamily="@font/font_awesome"
+                android:onClick="performAction"
+                android:text="\uf05e"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

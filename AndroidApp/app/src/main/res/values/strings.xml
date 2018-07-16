@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pepper IO</string>
+    <string name="MY_API_KEY">AIzaSyCkQRxlBNtpw3MhEkyqo3m4biROwC5tiD8</string>
+    <string name="TextInfo">Tap on mic to start </string>
+</resources>
